@@ -12,6 +12,8 @@ const intensityInput = document.getElementById("intensity");
 const intensityValue = document.getElementById("intensity-value");
 const toast = document.getElementById("toast");
 const robustnessPanel = document.getElementById("robustness-panel");
+const exportFormat = document.getElementById("export-format");
+const exportQuality = document.getElementById("export-quality");
 
 const MAX_PIXELS = 12_000_000;
 let originalImage = null;
@@ -48,6 +50,8 @@ function resetResult() {
   document.getElementById("result-badge").textContent = "NOT APPLIED";
   document.getElementById("result-badge").classList.remove("applied");
   downloadButton.disabled = true;
+  exportFormat.disabled = true;
+  exportQuality.disabled = true;
   document.getElementById("simulation-result").classList.add("hidden");
   robustnessPanel.classList.add("hidden");
 }
@@ -170,6 +174,9 @@ async function applyVariation() {
     badge.textContent = "VARIATION APPLIED";
     badge.classList.add("applied");
     downloadButton.disabled = false;
+    exportFormat.disabled = false;
+    exportQuality.disabled = false;
+    updateDownloadLabel();
     robustnessPanel.classList.remove("hidden");
     document.getElementById("simulation-result").classList.add("hidden");
     showToast("Experimental pixel variation applied. This is not verified AI protection.");
@@ -189,6 +196,12 @@ async function applyVariation() {
   }
 }
 
+function updateDownloadLabel() {
+  const format = exportFormat.value;
+  const extension = format === "image/jpeg" ? "JPG" : format === "image/webp" ? "WebP" : "PNG";
+  downloadButton.innerHTML = `<span>↓</span> Download ${extension}`;
+}
+
 function downloadResult() {
   if (!resultCanvas.width || !resultCanvas.height) return;
   resultCanvas.toBlob((blob) => {
@@ -199,13 +212,14 @@ function downloadResult() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${originalName}-veil.png`;
+    const extension = exportFormat.value === "image/jpeg" ? "jpg" : exportFormat.value === "image/webp" ? "webp" : "png";
+    link.download = `${originalName}-veil.${extension}`;
     document.body.appendChild(link);
     link.click();
     link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    showToast("PNG downloaded. Keep your original somewhere safe.");
-  }, "image/png");
+    showToast(`${extension.toUpperCase()} downloaded. Keep your original somewhere safe.`);
+  }, exportFormat.value, Number(exportQuality.value) / 100);
 }
 
 function runSimulation() {
@@ -288,3 +302,7 @@ document.querySelectorAll('input[name="mode"]').forEach((input) => {
 applyButton.addEventListener("click", applyVariation);
 downloadButton.addEventListener("click", downloadResult);
 document.getElementById("simulate-button").addEventListener("click", runSimulation);
+exportFormat.addEventListener("change", updateDownloadLabel);
+exportQuality.addEventListener("input", () => {
+  document.getElementById("quality-value").textContent = `${exportQuality.value}%`;
+});

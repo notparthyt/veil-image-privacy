@@ -130,6 +130,17 @@
 
               <button id="apply-button" class="primary-button" type="button" disabled><span class="button-sparkle">✳</span> Apply variation <span class="button-arrow">→</span></button>
               <button id="download-button" class="download-button" type="button" disabled><span>↓</span> Download PNG</button>
+              <div class="export-controls">
+                <label for="export-format">Export format</label>
+                <select id="export-format" disabled>
+                  <option value="image/png">PNG · lossless</option>
+                  <option value="image/jpeg">JPEG · smaller file</option>
+                  <option value="image/webp">WebP · compact</option>
+                </select>
+                <label class="quality-label" for="export-quality">Quality <span id="quality-value">88%</span></label>
+                <input id="export-quality" type="range" min="50" max="100" value="88" disabled>
+                <small>JPEG and WebP use the selected quality. Export creates a new file.</small>
+              </div>
               <p class="download-note"><span>◇</span> Your original file is never overwritten.</p>
             </aside>
           </section>
