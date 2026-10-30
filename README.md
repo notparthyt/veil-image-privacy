@@ -1,6 +1,6 @@
 # Veil
 
-Veil is a browser-based image privacy lab. It applies experimental pixel variations locally and exports a separate PNG, JPEG, or WebP while leaving the source image untouched. JPEG and WebP exports include an adjustable quality setting.
+Veil is a browser-based image privacy lab. It applies experimental pixel variations and optional visible attribution locally, then exports a separate PNG, JPEG, or WebP while leaving the source image untouched. JPEG and WebP exports include an adjustable quality setting.
 
 ## Run locally
 
@@ -14,6 +14,6 @@ This repository uses GitHub Actions to publish the static app to GitHub Pages af
 
 ## Limitations
 
-The variations are not a validated adversarial defense and do not guarantee protection from AI training, image generation, impersonation, or misuse. Screenshots, cropping, resizing, compression, and other transformations can change or remove pixel differences. The share simulation reports visual pixel differences only; it is not an AI-protection test. Exporting through the browser canvas creates a fresh image file and does not preserve source metadata such as EXIF information.
+The variations and visible watermark are not validated defenses against AI editing or misuse. A model may ignore or remove them, and screenshots, cropping, resizing, compression, and other transformations can change or remove pixel differences. The share simulation reports visual pixel differences only; it is not an AI-protection test. Exporting through the browser canvas creates a fresh image file and does not preserve source metadata such as EXIF information.
 
 Image processing runs in the visitor's browser. The app does not upload selected images.

@@ -128,6 +128,15 @@
                 <p class="control-note">Higher values make more visible changes. This is not a measure of protection.</p>
               </div>
 
+              <fieldset class="watermark-controls">
+                <legend>VISIBLE WATERMARK</legend>
+                <label class="watermark-toggle"><input id="watermark-enabled" type="checkbox"> Add a name or attribution mark</label>
+                <input id="watermark-text" type="text" maxlength="48" value="© Your name" aria-label="Watermark text" disabled>
+                <label class="watermark-opacity-label" for="watermark-opacity">Opacity <span id="watermark-opacity-value">24%</span></label>
+                <input id="watermark-opacity" type="range" min="10" max="60" value="24" disabled>
+                <p>Visible marks can discourage casual reuse and add attribution. They can still be cropped or removed.</p>
+              </fieldset>
+
               <button id="apply-button" class="primary-button" type="button" disabled><span class="button-sparkle">✳</span> Apply variation <span class="button-arrow">→</span></button>
               <button id="download-button" class="download-button" type="button" disabled><span>↓</span> Download PNG</button>
               <div class="export-controls">
@@ -147,7 +156,7 @@
 
           <section class="learn-section" id="how-it-works">
             <div class="learn-icon">✳</div>
-            <div><h2>What this tool can — and can’t — do</h2><p>Veil applies a visible-or-subtle pixel variation locally. It is an educational prototype, not a validated adversarial defense. A screenshot, crop, resize, or re-encoding may change or remove these pixel differences. For sensitive photos, consider sharing less identifying content and limiting the audience.</p></div>
+            <div><h2>What this tool can — and can’t — do</h2><p>Veil applies pixel variations and optional visible attribution locally. Neither is a validated defense against AI editing: a model may ignore, alter, crop, or remove these changes. For sensitive photos, consider sharing less identifying content and limiting the audience.</p></div>
             <a href="#studio" class="learn-link">BACK TO STUDIO ↑</a>
           </section>
           <footer class="footer"><span>VEIL <span class="brand-period">·</span> IMAGE PRIVACY LAB</span><span>EXPERIMENTAL TOOL · NO GUARANTEES</span></footer>

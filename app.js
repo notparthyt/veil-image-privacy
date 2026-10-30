@@ -14,6 +14,9 @@ const toast = document.getElementById("toast");
 const robustnessPanel = document.getElementById("robustness-panel");
 const exportFormat = document.getElementById("export-format");
 const exportQuality = document.getElementById("export-quality");
+const watermarkEnabled = document.getElementById("watermark-enabled");
+const watermarkText = document.getElementById("watermark-text");
+const watermarkOpacity = document.getElementById("watermark-opacity");
 
 const MAX_PIXELS = 12_000_000;
 let originalImage = null;
@@ -170,6 +173,7 @@ async function applyVariation() {
     }
 
     setCanvasPreview(resultCanvas, document.getElementById("result-placeholder"), imageData);
+    if (watermarkEnabled.checked && watermarkText.value.trim()) applyWatermark();
     const badge = document.getElementById("result-badge");
     badge.textContent = "VARIATION APPLIED";
     badge.classList.add("applied");
@@ -194,6 +198,31 @@ async function applyVariation() {
     removeButton.disabled = false;
     modeInputs.forEach((input) => { input.disabled = false; });
   }
+}
+
+function applyWatermark() {
+  const context = resultCanvas.getContext("2d");
+  const label = watermarkText.value.trim();
+  const fontSize = Math.max(18, Math.round(Math.min(resultCanvas.width, resultCanvas.height) / 22));
+  const diagonal = Math.ceil(Math.hypot(resultCanvas.width, resultCanvas.height));
+  context.save();
+  context.translate(resultCanvas.width / 2, resultCanvas.height / 2);
+  context.rotate(-Math.PI / 6);
+  context.font = `600 ${fontSize}px system-ui, sans-serif`;
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillStyle = `rgba(255,255,255,${Number(watermarkOpacity.value) / 100})`;
+  context.strokeStyle = `rgba(20,30,24,${Number(watermarkOpacity.value) / 180})`;
+  context.lineWidth = Math.max(1, fontSize / 18);
+  const spacingX = Math.max(fontSize * 5, context.measureText(label).width + fontSize * 2);
+  const spacingY = fontSize * 5;
+  for (let y = -diagonal; y <= diagonal; y += spacingY) {
+    for (let x = -diagonal; x <= diagonal; x += spacingX) {
+      context.strokeText(label, x, y);
+      context.fillText(label, x, y);
+    }
+  }
+  context.restore();
 }
 
 function updateDownloadLabel() {
@@ -302,6 +331,16 @@ document.querySelectorAll('input[name="mode"]').forEach((input) => {
 applyButton.addEventListener("click", applyVariation);
 downloadButton.addEventListener("click", downloadResult);
 document.getElementById("simulate-button").addEventListener("click", runSimulation);
+watermarkEnabled.addEventListener("change", () => {
+  watermarkText.disabled = !watermarkEnabled.checked;
+  watermarkOpacity.disabled = !watermarkEnabled.checked;
+  resetResult();
+});
+watermarkText.addEventListener("input", resetResult);
+watermarkOpacity.addEventListener("input", () => {
+  document.getElementById("watermark-opacity-value").textContent = `${watermarkOpacity.value}%`;
+  resetResult();
+});
 exportFormat.addEventListener("change", updateDownloadLabel);
 exportQuality.addEventListener("input", () => {
   document.getElementById("quality-value").textContent = `${exportQuality.value}%`;
