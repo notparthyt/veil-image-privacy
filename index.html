@@ -89,8 +89,10 @@
                   <button id="simulate-button" type="button" class="secondary-button">Run simulation <span>→</span></button>
                 </div>
                 <div class="simulation-result hidden" id="simulation-result" aria-live="polite">
-                  <div><span class="result-label">PIXEL DIFFERENCE AFTER SIMULATION</span><strong id="difference-value">—</strong></div>
-                  <p>This measures visual pixel changes only. It does not measure whether an image can be used to train or generate AI.</p>
+                  <div class="ai-rating"><span>AI editability rating</span><strong>NOT TESTED</strong></div>
+                  <p class="ai-rating-note">This browser-only check does not run AI editing models, so it cannot predict whether they can change this photo.</p>
+                  <div class="pixel-rating"><span class="result-label">AVERAGE PIXEL CHANGE AFTER JPEG SHARE SIMULATION</span><strong id="difference-value">—</strong></div>
+                  <p>This number compares pixels after resizing and JPEG recompression. It is not an AI capability or protection score.</p>
                 </div>
               </div>
             </div>
